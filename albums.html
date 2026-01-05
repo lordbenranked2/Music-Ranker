@@ -9,6 +9,8 @@
     nav { padding: 10px; text-align: center; background: #333; }
     nav a { color: #fff; text-decoration: none; margin: 0 15px; }
     main { padding: 20px; }
+    .search-bar { margin-bottom: 20px; text-align: center; }
+    .search-bar input { padding: 8px; width: 250px; font-size: 1em; }
     .album-list { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
     .album { background: #fff; padding: 10px; width: 200px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-radius: 5px; text-align: center; }
     .album img { width: 100%; border-radius: 5px; }
@@ -26,34 +28,56 @@
     <a href="songs.html">Songs</a>
     <a href="artists.html">Artists</a>
   </nav>
+
   <main>
+    <div class="search-bar">
+      <input type="text" id="album-search" placeholder="Search albums or artists...">
+    </div>
     <div class="album-list" id="album-list"></div>
   </main>
 
   <script>
-    // Fetch albums from albums.json
-    fetch('albums.json')
-      .then(response => response.json())
-      .then(albums => {
-        const albumList = document.getElementById('album-list');
-        albums.forEach(album => {
-          const albumDiv = document.createElement('div');
-          albumDiv.className = 'album';
-          
-          // <-- ADD THIS LINE BELOW TO GIVE EACH ALBUM A UNIQUE ID
-          albumDiv.id = `album-${album.id}`; // <-- ADD HERE
+    let allAlbums = [];
 
-          albumDiv.innerHTML = `
-            <img src="${album.cover}" alt="${album.name}">
-            <h3>${album.name}</h3>
-            <p>${album.artist}</p>
-            <p class="release-date">Released: ${album.release_date}</p>
-            <p class="rating">Rating: ${album.rating}</p>
-          `;
-          albumList.appendChild(albumDiv);
-        });
+    // Fetch albums
+    fetch('albums.json')
+      .then(r => r.json())
+      .then(albums => {
+        allAlbums = albums;
+        displayAlbums(albums);
       })
       .catch(err => console.error('Failed to load albums:', err));
+
+    // Display albums function
+    function displayAlbums(albums) {
+      const albumList = document.getElementById('album-list');
+      albumList.innerHTML = '';
+      albums.forEach(album => {
+        const albumDiv = document.createElement('div');
+        albumDiv.className = 'album';
+        albumDiv.id = `album-${album.id}`; // <-- Keep the anchor ID
+
+        albumDiv.innerHTML = `
+          <img src="${album.cover}" alt="${album.name}">
+          <h3>${album.name}</h3>
+          <p>${album.artist}</p>
+          <p class="release-date">Released: ${album.release_date}</p>
+          <p class="rating">Rating: ${album.rating}</p>
+        `;
+        albumList.appendChild(albumDiv);
+      });
+    }
+
+    // Search functionality
+    const searchInput = document.getElementById('album-search');
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase();
+      const filtered = allAlbums.filter(album =>
+        album.name.toLowerCase().includes(query) ||
+        album.artist.toLowerCase().includes(query)
+      );
+      displayAlbums(filtered);
+    });
   </script>
 </body>
 </html>
