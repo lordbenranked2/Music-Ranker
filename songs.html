@@ -2,77 +2,122 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Songs - My Music Database</title>
+  <title>Songs | My Music Database</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; }
-    header { background: #222; color: #fff; padding: 20px; text-align: center; }
-    nav { padding: 10px; text-align: center; background: #333; }
-    nav a { color: #fff; text-decoration: none; margin: 0 15px; }
-    main { padding: 20px; }
-    table { width: 100%; border-collapse: collapse; background: #fff; }
-    th, td { padding: 10px; border-bottom: 1px solid #ddd; text-align: left; }
-    th { background: #333; color: #fff; }
-    a.album-link { color: #3498db; text-decoration: none; }
-    .rating { font-weight: bold; color: #e67e22; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f5f5f5;
+    }
+
+    header {
+      background: #111;
+      color: white;
+      padding: 15px;
+    }
+
+    nav a {
+      color: white;
+      margin-right: 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background: #eee;
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Songs</h1>
-  </header>
+
+<header>
+  <h1>Songs</h1>
   <nav>
     <a href="index.html">Home</a>
     <a href="albums.html">Albums</a>
     <a href="songs.html">Songs</a>
     <a href="artists.html">Artists</a>
   </nav>
-  <main>
-    <table id="songs-table">
-      <thead>
-        <tr>
-          <th>Song</th>
-          <th>Artist</th>
-          <th>Album</th>
-          <th>Length</th>
-          <th>Rating</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </main>
+</header>
 
-  <script>
-  // Load songs and albums
-  Promise.all([
-    fetch('songs.json').then(r => r.json()),
-    fetch('albums.json').then(r => r.json())
-  ])
-  .then(([songs, albums]) => {
-    const tbody = document.querySelector('#songs-table tbody');
+<main>
+  <input
+    type="text"
+    id="songSearch"
+    placeholder="Search songs, artists, or albums..."
+    onkeyup="filterSongs()"
+  >
 
-    songs.forEach(song => {
-      const album = albums.find(a => a.id === song.album_id);
+  <table id="songsTable">
+    <thead>
+      <tr>
+        <th>Song</th>
+        <th>Artist</th>
+        <th>Album</th>
+        <th>Length</th>
+        <th>Rating</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Paranoid Android</td>
+        <td>Radiohead</td>
+        <td><a href="albums.html#ok-computer">OK Computer</a></td>
+        <td>6:27</td>
+        <td>5.0</td>
+      </tr>
+      <tr>
+        <td>Runaway</td>
+        <td>Kanye West</td>
+        <td><a href="albums.html#mbdtf">My Beautiful Dark Twisted Fantasy</a></td>
+        <td>9:08</td>
+        <td>4.9</td>
+      </tr>
+      <tr>
+        <td>Self Control</td>
+        <td>Frank Ocean</td>
+        <td><a href="albums.html#blonde">Blonde</a></td>
+        <td>4:09</td>
+        <td>4.8</td>
+      </tr>
+    </tbody>
+  </table>
+</main>
 
-      const tr = document.createElement('tr');
+<script>
+function filterSongs() {
+  const input = document.getElementById("songSearch").value.toLowerCase();
+  const rows = document.querySelectorAll("#songsTable tbody tr");
 
-      // <-- ADD THIS LINE TO GIVE EACH SONG A UNIQUE ID
-      tr.id = `song-${song.id}`; // <-- ADD HERE
-
-      tr.innerHTML = `
-        <td>${song.name}</td>
-        <td>${song.artist}</td>
-        <td>
-          <a class="album-link" href="albums.html#album-${album.id}">
-            ${album.name}
-          </a>
-        </td>
-        <td>${song.length}</td>
-        <td class="rating">${song.rating}</td>
-      `;
-      tbody.appendChild(tr);
-    });
-  })
-  .catch(err => console.error('Failed to load songs:', err));
+  rows.forEach(row => {
+    const text = row.innerText.toLowerCase();
+    row.style.display = text.includes(input) ? "" : "none";
+  });
+}
 </script>
+
 </body>
 </html>
