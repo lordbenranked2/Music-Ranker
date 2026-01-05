@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Artists - My Music Database</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; }
+    header { background: #222; color: #fff; padding: 20px; text-align: center; }
+    nav { padding: 10px; text-align: center; background: #333; }
+    nav a { color: #fff; text-decoration: none; margin: 0 15px; }
+    main { padding: 20px; }
+    .artist-list { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+    .artist { background: #fff; padding: 10px; width: 200px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-radius: 5px; text-align: center; }
+    .artist img { width: 100%; border-radius: 5px; }
+    .genre, .debut { font-size: 0.9em; color: #777; }
+    a.album-link { color: #3498db; text-decoration: none; font-size: 0.9em; display: block; margin-top: 5px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Artists</h1>
+  </header>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="albums.html">Albums</a>
+    <a href="songs.html">Songs</a>
+    <a href="artists.html">Artists</a>
+  </nav>
+  <main>
+    <div class="artist-list" id="artist-list"></div>
+  </main>
+
+  <script>
+    Promise.all([fetch('artists.json').then(r => r.json()), fetch('albums.json').then(r => r.json())])
+      .then(([artists, albums]) => {
+        const list = document.getElementById('artist-list');
+        artists.forEach(artist => {
+          const artistAlbums = albums.filter(a => a.artist === artist.name);
+          const albumLinks = artistAlbums.map(a => `<a class="album-link" href="albums.html#album-${a.id}">${a.name}</a>`).join('');
+          const div = document.createElement('div');
+          div.className = 'artist';
+          div.innerHTML = `
+            <img src="${artist.image}" alt="${artist.name}">
+            <h3>${artist.name}</h3>
+            <p class="genre">Genre: ${artist.genre}</p>
+            <p class="debut">Debut: ${artist.debut}</p>
+            ${albumLinks}
+          `;
+          list.appendChild(div);
+        });
+      })
+      .catch(err => console.error('Failed to load artists:', err));
+  </script>
+</body>
+</html>
