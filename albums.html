@@ -39,6 +39,10 @@
         albums.forEach(album => {
           const albumDiv = document.createElement('div');
           albumDiv.className = 'album';
+          
+          // <-- ADD THIS LINE BELOW TO GIVE EACH ALBUM A UNIQUE ID
+          albumDiv.id = `album-${album.id}`; // <-- ADD HERE
+
           albumDiv.innerHTML = `
             <img src="${album.cover}" alt="${album.name}">
             <h3>${album.name}</h3>
