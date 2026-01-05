@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "name": "Come Together",
+    "album_id": 1,
+    "artist": "The Beatles",
+    "length": "4:20",
+    "rating": 9.5
+  },
+  {
+    "id": 2,
+    "name": "Get Lucky",
+    "album_id": 2,
+    "artist": "Daft Punk",
+    "length": "6:09",
+    "rating": 8.7
+  }
+]
