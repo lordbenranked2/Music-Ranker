@@ -31,25 +31,35 @@
   </main>
 
   <script>
-    Promise.all([fetch('artists.json').then(r => r.json()), fetch('albums.json').then(r => r.json())])
-      .then(([artists, albums]) => {
-        const list = document.getElementById('artist-list');
-        artists.forEach(artist => {
-          const artistAlbums = albums.filter(a => a.artist === artist.name);
-          const albumLinks = artistAlbums.map(a => `<a class="album-link" href="albums.html#album-${a.id}">${a.name}</a>`).join('');
-          const div = document.createElement('div');
-          div.className = 'artist';
-          div.innerHTML = `
-            <img src="${artist.image}" alt="${artist.name}">
-            <h3>${artist.name}</h3>
-            <p class="genre">Genre: ${artist.genre}</p>
-            <p class="debut">Debut: ${artist.debut}</p>
-            ${albumLinks}
-          `;
-          list.appendChild(div);
-        });
-      })
-      .catch(err => console.error('Failed to load artists:', err));
+    // Fetch artists and albums
+    Promise.all([
+      fetch('artists.json').then(r => r.json()),
+      fetch('albums.json').then(r => r.json())
+    ])
+    .then(([artists, albums]) => {
+      const list = document.getElementById('artist-list');
+
+      artists.forEach(artist => {
+        const artistAlbums = albums.filter(a => a.artist === artist.name);
+
+        // <-- Create album links that jump to the album section
+        const albumLinks = artistAlbums
+          .map(a => `<a class="album-link" href="albums.html#album-${a.id}">${a.name}</a>`)
+          .join('');
+
+        const div = document.createElement('div');
+        div.className = 'artist';
+        div.innerHTML = `
+          <img src="${artist.image}" alt="${artist.name}">
+          <h3>${artist.name}</h3>
+          <p class="genre">Genre: ${artist.genre}</p>
+          <p class="debut">Debut: ${artist.debut}</p>
+          ${albumLinks}  <!-- <-- Album links inserted here -->
+        `;
+        list.appendChild(div);
+      });
+    })
+    .catch(err => console.error('Failed to load artists:', err));
   </script>
 </body>
 </html>
