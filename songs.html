@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Songs - My Music Database</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; }
+    header { background: #222; color: #fff; padding: 20px; text-align: center; }
+    nav { padding: 10px; text-align: center; background: #333; }
+    nav a { color: #fff; text-decoration: none; margin: 0 15px; }
+    main { padding: 20px; }
+    table { width: 100%; border-collapse: collapse; background: #fff; }
+    th, td { padding: 10px; border-bottom: 1px solid #ddd; text-align: left; }
+    th { background: #333; color: #fff; }
+    a.album-link { color: #3498db; text-decoration: none; }
+    .rating { font-weight: bold; color: #e67e22; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Songs</h1>
+  </header>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="albums.html">Albums</a>
+    <a href="songs.html">Songs</a>
+    <a href="artists.html">Artists</a>
+  </nav>
+  <main>
+    <table id="songs-table">
+      <thead>
+        <tr>
+          <th>Song</th>
+          <th>Artist</th>
+          <th>Album</th>
+          <th>Length</th>
+          <th>Rating</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </main>
+
+  <script>
+    // Load songs
+    Promise.all([fetch('songs.json').then(r => r.json()), fetch('albums.json').then(r => r.json())])
+      .then(([songs, albums]) => {
+        const tbody = document.querySelector('#songs-table tbody');
+        songs.forEach(song => {
+          const album = albums.find(a => a.id === song.album_id);
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${song.name}</td>
+            <td>${song.artist}</td>
+            <td><a class="album-link" href="albums.html#album-${album.id}">${album.name}</a></td>
+            <td>${song.length}</td>
+            <td class="rating">${song.rating}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      })
+      .catch(err => console.error('Failed to load songs:', err));
+  </script>
+</body>
+</html>
