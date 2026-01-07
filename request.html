@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Request a Song / Artist / Album</title>
+<style>
+body { font-family: Arial; margin:0; background:#f5f5f5; }
+header { background:#111; color:white; padding:15px; }
+nav a { color:white; margin-right:15px; text-decoration:none; font-weight:bold; }
+main { padding:20px; max-width:600px; margin:auto; }
+input, textarea, select, button { width:100%; padding:10px; margin-bottom:15px; font-size:16px; }
+button { cursor:pointer; background:#111; color:white; border:none; border-radius:4px; }
+.success { color:green; margin-bottom:15px; }
+</style>
+</head>
+<body>
+<header>
+<h1>Request Something</h1>
+<nav>
+<a href="index.html">Home</a>
+<a href="albums.html">Albums</a>
+<a href="songs.html">Songs</a>
+<a href="artists.html">Artists</a>
+<a href="request.html">Request</a>
+<a href="settings.html">Settings</a>
+</nav>
+</header>
+
+<main>
+<div class="success" id="success" style="display:none;">Request submitted! Thank you 🙏</div>
+<select id="type">
+  <option value="song">Song</option>
+  <option value="album">Album</option>
+  <option value="artist">Artist</option>
+</select>
+<input type="text" id="title" placeholder="Title / Name">
+<input type="text" id="artist" placeholder="Artist Name (optional)">
+<textarea id="notes" placeholder="Notes or extra info..." rows="4"></textarea>
+<button id="submitBtn">Submit Request</button>
+</main>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBUoxl-FUxfUbc7sEIGxHCPUgyiWIXLs6o",
+  authDomain: "music-ranker-54f1a.firebaseapp.com",
+  databaseURL: "https://music-ranker-54f1a-default-rtdb.firebaseio.com",
+  projectId: "music-ranker-54f1a",
+  appId: "1:238695800458:web:b98d744977f3761e9ed773"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+document.getElementById("submitBtn").onclick = () => {
+  const type = document.getElementById("type").value;
+  const title = document.getElementById("title").value.trim();
+  const artist = document.getElementById("artist").value.trim();
+  const notes = document.getElementById("notes").value.trim();
+  
+  if(!title) return alert("Please enter a title or name!");
+
+  const requestRef = ref(db, "requests");
+  push(requestRef, { type, title, artist, notes, timestamp: Date.now() });
+
+  document.getElementById("success").style.display = "block";
+  document.getElementById("title").value = "";
+  document.getElementById("artist").value = "";
+  document.getElementById("notes").value = "";
+};
+</script>
+</body>
+</html>
