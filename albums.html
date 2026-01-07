@@ -1,228 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Albums</title>
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f5f5f5;
-    }
-
-    header {
-      background: #111;
-      color: white;
-      padding: 15px;
-    }
-
-    nav a {
-      color: white;
-      margin-right: 15px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    main {
-      padding: 20px;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      margin-bottom: 20px;
-    }
-
-    .album-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 20px;
-    }
-
-    .album-card {
-      background: white;
-      padding: 15px;
-      border-radius: 6px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .album-card img {
-      width: 100%;
-      border-radius: 4px;
-    }
-
-    .stars {
-      display: flex;
-      gap: 5px;
-      cursor: pointer;
-      margin-top: 8px;
-    }
-
-    .star {
-      font-size: 22px;
-      color: #ccc;
-    }
-
-    .star.active {
-      color: gold;
-    }
-
-    .average {
-      font-size: 14px;
-      color: #555;
-      margin-top: 4px;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Albums</title>
+<style>
+body { font-family: Arial; margin: 0; background: #f5f5f5; }
+header { background: #111; color: white; padding: 15px; }
+nav a { color: white; margin-right: 15px; text-decoration: none; font-weight: bold; }
+main { padding: 20px; }
+input { width: 100%; padding: 10px; font-size: 16px; margin-bottom: 20px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: 20px; }
+.card { background: white; padding: 15px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,.1); }
+.card img { width: 100%; border-radius: 4px; }
+.stars { display: flex; gap: 5px; cursor: pointer; margin-top: 8px; }
+.star { font-size: 22px; color: #ccc; }
+.star.active { color: gold; }
+.average { font-size: 14px; margin-top: 4px; color: #555; }
+</style>
 </head>
 <body>
-
 <header>
-  <h1>Albums</h1>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="albums.html">Albums</a>
-    <a href="songs.html">Songs</a>
-    <a href="artists.html">Artists</a>
-  </nav>
+<h1>Albums</h1>
+<nav>
+<a href="index.html">Home</a>
+<a href="albums.html">Albums</a>
+<a href="songs.html">Songs</a>
+<a href="artists.html">Artists</a>
+</nav>
 </header>
 
 <main>
-  <input
-    type="text"
-    id="albumSearch"
-    placeholder="Search albums..."
-    onkeyup="filterAlbums()"
-  >
-
-  <div class="album-grid" id="albumGrid"></div>
+<input id="search" placeholder="Search albums...">
+<div class="grid" id="grid"></div>
 </main>
 
-<!-- FIREBASE + RATING LOGIC -->
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-  import {
-    getDatabase,
-    ref,
-    set,
-    get,
-    onValue
-  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-  /* 🔥 REPLACE WITH YOUR FIREBASE CONFIG */
-  const firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyBUoxl-FUxfUbc7sEIGxHCPUgyiWIXLs6o",
   authDomain: "music-ranker-54f1a.firebaseapp.com",
   databaseURL: "https://music-ranker-54f1a-default-rtdb.firebaseio.com",
   projectId: "music-ranker-54f1a",
-  storageBucket: "music-ranker-54f1a.firebasestorage.app",
-  messagingSenderId: "238695800458",
-  appId: "1:238695800458:web:b98d744977f3761e9ed773",
-  measurementId: "G-86320CV6C6"
+  appId: "1:238695800458:web:b98d744977f3761e9ed773"
 };
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getDatabase(app);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+signInAnonymously(auth);
 
-  signInAnonymously(auth);
+const grid = document.getElementById("grid");
+let data = [];
 
-  const albumGrid = document.getElementById("albumGrid");
-  let albumsData = [];
+fetch("albums.json").then(r => r.json()).then(d => { data = d; render(d); });
 
-  fetch("albums.json")
-    .then(res => res.json())
-    .then(albums => {
-      albumsData = albums;
-      renderAlbums(albums);
-    });
+function render(items){
+  grid.innerHTML = "";
+  items.forEach(a => {
+    const c = document.createElement("div");
+    c.className = "card";
+    c.innerHTML = `
+      <img src="${a.image}">
+      <h3>${a.title}</h3>
+      <p>${a.artist} · ${a.year}</p>
+      <div class="rating" data-id="${a.id}">
+        <div class="stars">${"★".repeat(5).split("").map(()=>`<span class="star">★</span>`).join("")}</div>
+        <div class="average">Average: —</div>
+      </div>`;
+    grid.appendChild(c);
+  });
+  initRatings("albums");
+}
 
-  function renderAlbums(albums) {
-    albumGrid.innerHTML = "";
+function filterItems(){
+  const q = document.getElementById("search").value.toLowerCase();
+  render(data.filter(x=>x.title.toLowerCase().includes(q) || x.artist.toLowerCase().includes(q)));
+}
 
-    albums.forEach(album => {
-      const card = document.createElement("div");
-      card.className = "album-card";
+document.getElementById("search").addEventListener("keyup",()=>filterItems());
 
-      card.innerHTML = `
-        <img src="${album.cover}">
-        <h3>${album.title}</h3>
-        <p>${album.artist} · ${album.year}</p>
+function initRatings(type){
+  onAuthStateChanged(auth,user=>{
+    if(!user) return;
+    document.querySelectorAll(".rating").forEach(b=>{
+      const id = String(b.dataset.id);
+      const stars = b.querySelectorAll(".star");
+      const avg = b.querySelector(".average");
+      const base = ref(db,`ratings/${type}/${id}`);
+      const userRef = ref(db,`ratings/${type}/${id}/userRatings/${user.uid}`);
 
-        <div class="rating" data-id="${album.id}">
-          <div class="stars">
-            <span class="star">★</span>
-            <span class="star">★</span>
-            <span class="star">★</span>
-            <span class="star">★</span>
-            <span class="star">★</span>
-          </div>
-          <div class="average">Average: —</div>
-        </div>
-      `;
-
-      albumGrid.appendChild(card);
-    });
-
-    initRatings();
-  }
-
-  function filterAlbums() {
-    const query = document.getElementById("albumSearch").value.toLowerCase();
-    const filtered = albumsData.filter(a =>
-      a.title.toLowerCase().includes(query) ||
-      a.artist.toLowerCase().includes(query)
-    );
-    renderAlbums(filtered);
-  }
-
-  function initRatings() {
-    onAuthStateChanged(auth, user => {
-      if (!user) return;
-      const uid = user.uid;
-
-      document.querySelectorAll(".rating").forEach(block => {
-        const albumId = String(block.dataset.id);
-        const stars = block.querySelectorAll(".star");
-        const avgText = block.querySelector(".average");
-
-        const baseRef = ref(db, `ratings/${albumId}`);
-        const userRef = ref(db, `ratings/${albumId}/userRatings/${uid}`);
-
-        onValue(baseRef, snap => {
-          const data = snap.val();
-          if (!data || !data.userRatings) {
-            avgText.textContent = "Average: —";
-            return;
-          }
-
-          const values = Object.values(data.userRatings);
-          const avg = values.reduce((a,b)=>a+b,0) / values.length;
-          avgText.textContent = `Average: ${avg.toFixed(2)} (${values.length})`;
-        });
-
-        get(userRef).then(snap => {
-          if (snap.exists()) highlightStars(stars, snap.val());
-        });
-
-        stars.forEach((star, i) => {
-          star.addEventListener("click", () => {
-            set(userRef, i + 1);
-            highlightStars(stars, i + 1);
-          });
-        });
+      onValue(base,s=>{
+        const d = s.val();
+        if(!d||!d.userRatings){ avg.textContent="Average: —"; return; }
+        const v = Object.values(d.userRatings);
+        avg.textContent = `Average: ${(v.reduce((a,b)=>a+b,0)/v.length).toFixed(2)} (${v.length})`;
       });
-    });
-  }
 
-  function highlightStars(stars, rating) {
-    stars.forEach((s, i) => {
-      s.classList.toggle("active", i < rating);
+      get(userRef).then(s=>{ if(s.exists()) highlight(stars,s.val()); });
+
+      stars.forEach((st,i)=>st.onclick=()=>{ set(userRef,i+1); highlight(stars,i+1); });
     });
-  }
+  });
+}
+
+function highlight(stars,r){ stars.forEach((s,i)=>s.classList.toggle("active",i<r)); }
 </script>
-
 </body>
 </html>
