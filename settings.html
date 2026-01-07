@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Settings</title>
+<style>
+body { font-family: Arial; margin:0; background:#f5f5f5; }
+header { background:#111; color:white; padding:15px; }
+nav a { color:white; margin-right:15px; text-decoration:none; font-weight:bold; }
+main { padding:20px; max-width:600px; margin:auto; }
+label { display:block; margin-top:15px; font-weight:bold; }
+select, input { width:100%; padding:10px; font-size:16px; margin-top:5px; }
+</style>
+</head>
+<body>
+<header>
+<h1>Settings</h1>
+<nav>
+<a href="index.html">Home</a>
+<a href="albums.html">Albums</a>
+<a href="songs.html">Songs</a>
+<a href="artists.html">Artists</a>
+<a href="request.html">Request</a>
+<a href="settings.html">Settings</a>
+</nav>
+</header>
+
+<main>
+<label for="theme">Theme</label>
+<select id="theme">
+  <option value="light">Light</option>
+  <option value="dark">Dark</option>
+</select>
+
+<label for="font">Font</label>
+<select id="font">
+  <option value="Arial">Arial</option>
+  <option value="Verdana">Verdana</option>
+  <option value="Tahoma">Tahoma</option>
+</select>
+
+<label for="language">Language</label>
+<select id="language">
+  <option value="en">English</option>
+  <option value="es">Spanish</option>
+  <option value="fr">French</option>
+</select>
+
+<button id="saveBtn">Save Settings</button>
+</main>
+
+<script>
+const themeSelect = document.getElementById("theme");
+const fontSelect = document.getElementById("font");
+const langSelect = document.getElementById("language");
+
+// Load saved settings
+themeSelect.value = localStorage.getItem("theme") || "light";
+fontSelect.value = localStorage.getItem("font") || "Arial";
+langSelect.value = localStorage.getItem("language") || "en";
+
+// Apply settings
+document.body.style.background = themeSelect.value === "dark" ? "#111" : "#f5f5f5";
+document.body.style.color = themeSelect.value === "dark" ? "white" : "black";
+document.body.style.fontFamily = fontSelect.value;
+
+// Save settings
+document.getElementById("saveBtn").onclick = () => {
+  localStorage.setItem("theme", themeSelect.value);
+  localStorage.setItem("font", fontSelect.value);
+  localStorage.setItem("language", langSelect.value);
+  alert("Settings saved!");
+  location.reload();
+};
+</script>
+</body>
+</html>
