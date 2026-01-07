@@ -1,123 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Songs | My Music Database</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f5f5f5;
-    }
+<meta charset="UTF-8">
+<title>Songs</title>
 
-    header {
-      background: #111;
-      color: white;
-      padding: 15px;
-    }
-
-    nav a {
-      color: white;
-      margin-right: 15px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    main {
-      padding: 20px;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      margin-bottom: 20px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
-    }
-
-    th, td {
-      padding: 12px;
-      border-bottom: 1px solid #ddd;
-      text-align: left;
-    }
-
-    th {
-      background: #eee;
-    }
-  </style>
+<style>
+body { font-family: Arial; margin: 0; background: #f5f5f5; }
+header { background: #111; color: white; padding: 15px; }
+nav a { color: white; margin-right: 15px; text-decoration: none; font-weight: bold; }
+main { padding: 20px; }
+input { width: 100%; padding: 10px; font-size: 16px; margin-bottom: 20px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: 20px; }
+.card { background: white; padding: 15px; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,.1); }
+.stars { display: flex; gap: 5px; cursor: pointer; margin-top: 8px; }
+.star { font-size: 22px; color: #ccc; }
+.star.active { color: gold; }
+.average { font-size: 14px; margin-top: 4px; color: #555; }
+</style>
 </head>
-<body>
 
+<body>
 <header>
-  <h1>Songs</h1>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="albums.html">Albums</a>
-    <a href="songs.html">Songs</a>
-    <a href="artists.html">Artists</a>
-  </nav>
+<h1>Songs</h1>
+<nav>
+<a href="index.html">Home</a>
+<a href="albums.html">Albums</a>
+<a href="songs.html">Songs</a>
+<a href="artists.html">Artists</a>
+</nav>
 </header>
 
 <main>
-  <input
-    type="text"
-    id="songSearch"
-    placeholder="Search songs, artists, or albums..."
-    onkeyup="filterSongs()"
-  >
-
-  <table id="songsTable">
-    <thead>
-      <tr>
-        <th>Song</th>
-        <th>Artist</th>
-        <th>Album</th>
-        <th>Length</th>
-        <th>Rating</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Paranoid Android</td>
-        <td>Radiohead</td>
-        <td><a href="albums.html#ok-computer">OK Computer</a></td>
-        <td>6:27</td>
-        <td>5.0</td>
-      </tr>
-      <tr>
-        <td>Runaway</td>
-        <td>Kanye West</td>
-        <td><a href="albums.html#mbdtf">My Beautiful Dark Twisted Fantasy</a></td>
-        <td>9:08</td>
-        <td>4.9</td>
-      </tr>
-      <tr>
-        <td>Self Control</td>
-        <td>Frank Ocean</td>
-        <td><a href="albums.html#blonde">Blonde</a></td>
-        <td>4:09</td>
-        <td>4.8</td>
-      </tr>
-    </tbody>
-  </table>
+<input id="search" placeholder="Search songs..." onkeyup="filterItems()">
+<div class="grid" id="grid"></div>
 </main>
 
-<script>
-function filterSongs() {
-  const input = document.getElementById("songSearch").value.toLowerCase();
-  const rows = document.querySelectorAll("#songsTable tbody tr");
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getDatabase, ref, set, get, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-  rows.forEach(row => {
-    const text = row.innerText.toLowerCase();
-    row.style.display = text.includes(input) ? "" : "none";
-  });
+const app=initializeApp({
+  apiKey:"AIzaSyBUoxl-FUxfUbc7sEIGxHCPUgyiWIXLs6o",
+  authDomain:"music-ranker-54f1a.firebaseapp.com",
+  databaseURL:"https://music-ranker-54f1a-default-rtdb.firebaseio.com",
+  projectId:"music-ranker-54f1a",
+  appId:"1:238695800458:web:b98d744977f3761e9ed773"
+});
+const auth=getAuth(app), db=getDatabase(app);
+signInAnonymously(auth);
+
+const grid=document.getElementById("grid");
+let data=[];
+
+fetch("songs.json").then(r=>r.json()).then(d=>{ data=d; render(d); });
+
+function render(items){
+grid.innerHTML="";
+items.forEach(s=>{
+const c=document.createElement("div");
+c.className="card";
+c.innerHTML=`
+<h3>${s.title}</h3>
+<p>${s.artist} · ${s.year}</p>
+<div class="rating" data-id="${s.id}">
+<div class="stars">${"★".repeat(5).split("").map(()=>`<span class="star">★</span>`).join("")}</div>
+<div class="average">Average: —</div>
+</div>`;
+grid.appendChild(c);
+});
+initRatings("songs");
 }
-</script>
 
+function filterItems(){
+const q=document.getElementById("search").value.toLowerCase();
+render(data.filter(x=>x.title.toLowerCase().includes(q)||x.artist.toLowerCase().includes(q)));
+}
+
+function initRatings(type){
+onAuthStateChanged(auth,u=>{
+if(!u)return;
+document.querySelectorAll(".rating").forEach(b=>{
+const id=String(b.dataset.id);
+const stars=b.querySelectorAll(".star");
+const avg=b.querySelector(".average");
+const base=ref(db,`ratings/${type}/${id}`);
+const userRef=ref(db,`ratings/${type}/${id}/userRatings/${u.uid}`);
+
+onValue(base,s=>{
+const d=s.val();
+if(!d||!d.userRatings){avg.textContent="Average: —";return;}
+const v=Object.values(d.userRatings);
+avg.textContent=`Average: ${(v.reduce((a,b)=>a+b,0)/v.length).toFixed(2)} (${v.length})`;
+});
+
+get(userRef).then(s=>{ if(s.exists()) highlight(stars,s.val()); });
+stars.forEach((st,i)=>st.onclick=()=>{ set(userRef,i+1); highlight(stars,i+1); });
+});
+});
+}
+
+function highlight(stars,r){ stars.forEach((s,i)=>s.classList.toggle("active",i<r)); }
+</script>
 </body>
 </html>
