@@ -1,18 +1,16 @@
 [
   {
     "id": 1,
-    "name": "Abbey Road",
+    "title": "Abbey Road",
     "artist": "The Beatles",
-    "release_date": "1969-09-26",
-    "cover": "https://upload.wikimedia.org/wikipedia/en/4/42/Beatles_-_Abbey_Road.jpg",
-    "rating": 9.3
+    "year": 1969,
+    "cover": "https://upload.wikimedia.org/wikipedia/en/4/42/Beatles_-_Abbey_Road.jpg"
   },
   {
     "id": 2,
-    "name": "Random Access Memories",
+    "title": "Random Access Memories",
     "artist": "Daft Punk",
-    "release_date": "2013-05-17",
-    "cover": "https://upload.wikimedia.org/wikipedia/en/a/a7/Random_Access_Memories.jpg",
-    "rating": 8.5
+    "year": 2013,
+    "cover": "https://upload.wikimedia.org/wikipedia/en/a/a7/Random_Access_Memories.jpg"
   }
 ]
