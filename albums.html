@@ -2,88 +2,116 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Albums - My Music Database</title>
+  <title>Albums</title>
+
   <style>
-    body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; }
-    header { background: #222; color: #fff; padding: 20px; text-align: center; }
-    nav { padding: 10px; text-align: center; background: #333; }
-    nav a { color: #fff; text-decoration: none; margin: 0 15px; }
-    main { padding: 20px; }
-    .search-bar { margin-bottom: 20px; text-align: center; }
-    .search-bar input { padding: 8px; width: 250px; font-size: 1em; }
-    .album-list { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-    .album { background: #fff; padding: 10px; width: 200px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-radius: 5px; text-align: center; }
-    .album img { width: 100%; border-radius: 5px; }
-    .rating { font-weight: bold; color: #e67e22; }
-    .release-date { font-size: 0.9em; color: #777; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f5f5f5;
+    }
+
+    header {
+      background: #111;
+      color: white;
+      padding: 15px;
+    }
+
+    nav a {
+      color: white;
+      margin-right: 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    .album-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .album-card {
+      background: white;
+      padding: 15px;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .album-card img {
+      width: 100%;
+      border-radius: 4px;
+    }
+
+    .stars {
+      display: flex;
+      gap: 5px;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .star {
+      font-size: 22px;
+      color: #ccc;
+    }
+
+    .star.active {
+      color: gold;
+    }
+
+    .average {
+      font-size: 14px;
+      color: #555;
+      margin-top: 4px;
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Albums</h1>
-  </header>
+
+<header>
+  <h1>Albums</h1>
   <nav>
     <a href="index.html">Home</a>
     <a href="albums.html">Albums</a>
     <a href="songs.html">Songs</a>
     <a href="artists.html">Artists</a>
   </nav>
+</header>
 
-  <main>
-    <div class="search-bar">
-      <input type="text" id="album-search" placeholder="Search albums or artists...">
-    </div>
-    <div class="album-list" id="album-list"></div>
-  </main>
+<main>
+  <input
+    type="text"
+    id="albumSearch"
+    placeholder="Search albums..."
+    onkeyup="filterAlbums()"
+  >
 
-  <script>
-    let allAlbums = [];
+  <div class="album-grid" id="albumGrid"></div>
+</main>
 
-    // Fetch albums
-    fetch('albums.json')
-      .then(r => r.json())
-      .then(albums => {
-        allAlbums = albums;
-        displayAlbums(albums);
-      })
-      .catch(err => console.error('Failed to load albums:', err));
-
-    // Display albums function
-    function displayAlbums(albums) {
-      const albumList = document.getElementById('album-list');
-      albumList.innerHTML = '';
-      albums.forEach(album => {
-        const albumDiv = document.createElement('div');
-        albumDiv.className = 'album';
-        albumDiv.id = `album-${album.id}`; // <-- Keep the anchor ID
-
-        albumDiv.innerHTML = `
-          <img src="${album.cover}" alt="${album.name}">
-          <h3>${album.name}</h3>
-          <p>${album.artist}</p>
-          <p class="release-date">Released: ${album.release_date}</p>
-          <p class="rating">Rating: ${album.rating}</p>
-        `;
-        albumList.appendChild(albumDiv);
-      });
-    }
-
-    // Search functionality
-    const searchInput = document.getElementById('album-search');
-    searchInput.addEventListener('input', () => {
-      const query = searchInput.value.toLowerCase();
-      const filtered = allAlbums.filter(album =>
-        album.name.toLowerCase().includes(query) ||
-        album.artist.toLowerCase().includes(query)
-      );
-      displayAlbums(filtered);
-    });
-  </script>
-  <script type="module">
-  // Import Firebase core
+<!-- FIREBASE + RATING LOGIC -->
+<script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import {
+    getDatabase,
+    ref,
+    set,
+    get,
+    onValue
+  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
+  /* 🔥 REPLACE WITH YOUR FIREBASE CONFIG */
   const firebaseConfig = {
   apiKey: "AIzaSyBUoxl-FUxfUbc7sEIGxHCPUgyiWIXLs6o",
   authDomain: "music-ranker-54f1a.firebaseapp.com",
@@ -94,20 +122,107 @@
   appId: "1:238695800458:web:b98d744977f3761e9ed773",
   measurementId: "G-86320CV6C6"
 };
-    // Initialize Firebase
-const app = initializeApp(firebaseConfig);
 
-// Initialize Auth
-const auth = getAuth(app);
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getDatabase(app);
 
-// Sign user in anonymously
-signInAnonymously(auth)
-  .then(() => {
-    console.log("Firebase auth: anonymous user signed in");
-  })
-  .catch((error) => {
-    console.error("Auth error:", error);
-  });
+  signInAnonymously(auth);
+
+  const albumGrid = document.getElementById("albumGrid");
+  let albumsData = [];
+
+  fetch("albums.json")
+    .then(res => res.json())
+    .then(albums => {
+      albumsData = albums;
+      renderAlbums(albums);
+    });
+
+  function renderAlbums(albums) {
+    albumGrid.innerHTML = "";
+
+    albums.forEach(album => {
+      const card = document.createElement("div");
+      card.className = "album-card";
+
+      card.innerHTML = `
+        <img src="${album.cover}">
+        <h3>${album.title}</h3>
+        <p>${album.artist} · ${album.year}</p>
+
+        <div class="rating" data-id="${album.id}">
+          <div class="stars">
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+          </div>
+          <div class="average">Average: —</div>
+        </div>
+      `;
+
+      albumGrid.appendChild(card);
+    });
+
+    initRatings();
+  }
+
+  function filterAlbums() {
+    const query = document.getElementById("albumSearch").value.toLowerCase();
+    const filtered = albumsData.filter(a =>
+      a.title.toLowerCase().includes(query) ||
+      a.artist.toLowerCase().includes(query)
+    );
+    renderAlbums(filtered);
+  }
+
+  function initRatings() {
+    onAuthStateChanged(auth, user => {
+      if (!user) return;
+      const uid = user.uid;
+
+      document.querySelectorAll(".rating").forEach(block => {
+        const albumId = block.dataset.id;
+        const stars = block.querySelectorAll(".star");
+        const avgText = block.querySelector(".average");
+
+        const baseRef = ref(db, `ratings/${albumId}`);
+        const userRef = ref(db, `ratings/${albumId}/userRatings/${uid}`);
+
+        onValue(baseRef, snap => {
+          const data = snap.val();
+          if (!data || !data.userRatings) {
+            avgText.textContent = "Average: —";
+            return;
+          }
+
+          const values = Object.values(data.userRatings);
+          const avg = values.reduce((a,b)=>a+b,0) / values.length;
+          avgText.textContent = `Average: ${avg.toFixed(2)} (${values.length})`;
+        });
+
+        get(userRef).then(snap => {
+          if (snap.exists()) highlightStars(stars, snap.val());
+        });
+
+        stars.forEach((star, i) => {
+          star.addEventListener("click", () => {
+            set(userRef, i + 1);
+            highlightStars(stars, i + 1);
+          });
+        });
+      });
+    });
+  }
+
+  function highlightStars(stars, rating) {
+    stars.forEach((s, i) => {
+      s.classList.toggle("active", i < rating);
+    });
+  }
 </script>
+
 </body>
 </html>
