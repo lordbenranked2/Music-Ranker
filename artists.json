@@ -103,20 +103,140 @@
   },
   {
     "id": 18,
-    "name": "Ariana Grande",
-    "debut": 2013,
-    "image": "https://upload.wikimedia.org/wikipedia/en/f/f4/Ariana_Grande_-_Sweetener.png"
+    "name": "Playboi Carti",
+    "debut": 2011,
+    "image": "https://i.scdn.co/image/ab6761610000e5ebba50ca67ffc3097f6ea1710a"
   },
   {
     "id": 19,
-    "name": "Ed Sheeran",
-    "debut": 2011,
-    "image": "https://upload.wikimedia.org/wikipedia/en/4/45/Ed_Sheeran_%E2%80%93_%C3%97.png"
+    "name": "Pop Smoke",
+    "debut": 2018,
+    "image": "https://i.scdn.co/image/ab67616100005174597f9edd2cd1a892d4412b09"
   },
   {
     "id": 20,
-    "name": "Halsey",
-    "debut": 2014,
-    "image": "https://upload.wikimedia.org/wikipedia/en/4/41/Halsey_-_Badlands.png"
+    "name": "Tame Impala",
+    "debut": 2007,
+    "image": "https://i.scdn.co/image/ab6761610000e5ebe412a782245eb20d9626c601"
+  },
+  {
+    "id": 21,
+    "name": "Red Hot Chili Peppers",
+    "debut": 1983,
+    "image": "https://i.scdn.co/image/ab6761610000e5ebc33cc15260b767ddec982ce8"
+  },
+  {
+    "id": 22,
+    "name": "Rush",
+    "debut": 1968,
+    "image": "https://i.scdn.co/image/ab67616d0000b273086344f8b22efcb902c2fc61"
+  },
+  {
+    "id": 23,
+    "name": "The Smashing Pumpkins",
+    "debut": 1988,
+    "image": "https://i.scdn.co/image/ab6761610000e5eba7f80939b43d9efe1ca73a22"
+  },
+  {
+    "id": 24,
+    "name": "Outkast",
+    "debut": 1992,
+    "image": "https://i.scdn.co/image/ab6761610000e5eb0cb3f95b9f8f7337e135a925"
+  },
+  {
+    "id": 25,
+    "name": "Nirvana",
+    "debut": 1987,
+    "image": "https://i.scdn.co/image/a4e10b79a642e9891383448cbf37d7266a6883d6"
+  },
+  {
+    "id": 26,
+    "name": "MF DOOM",
+    "debut": 1997,
+    "image": "https://i.scdn.co/image/ab6761610000e5eb6c8167ef48a872b6f190078f"
+  },
+  {
+    "id": 27,
+    "name": "Mac DeMarco",
+    "debut": 2009,
+    "image": "https://i.scdn.co/image/ab6761610000e5ebc9aca5b6d4c528caf75e8a1d"
+  },
+  {
+    "id": 28,
+    "name": "Kid Cudi",
+    "debut": 2008,
+    "image": "https://i.scdn.co/image/ab6761610000e5eb5f00bb6dd7a7008d14156630"
+  },
+  {
+    "id": 29,
+    "name": "Kanye West",
+    "debut": 2004,
+    "image": "https://i.scdn.co/image/ab6761610000e5eb6e835a500e791bf9c27a422a"
+  },
+  {
+    "id": 30,
+    "name": "J. Cole",
+    "debut": 2007,
+    "image": "https://i.scdn.co/image/ab6761610000e5eb4b053c29fd4b317ff825f0dc"
+  },
+  {
+    "id": 31,
+    "name": "Future",
+    "debut": 2010,
+    "image": "https://i.scdn.co/image/ab676161000051747565b356bc9d9394eefa2ccb"
+  },
+  {
+    "id": 32,
+    "name": "Eminem",
+    "debut": 1996,
+    "image": "https://i.scdn.co/image/ab6761610000e5eba00b11c129b27a88fc72f36b"
+  },
+  {
+    "id": 33,
+    "name": "Eazy-E",
+    "debut": 1986,
+    "image": "https://i.scdn.co/image/d01a3ee2567867cc2f1bd2b56d778874d2b89b50"
+  },
+  {
+    "id": 34,
+    "name": "Childish Gambino",
+    "debut": 2008,
+    "image": "https://i.scdn.co/image/ab6761610000e5ebc3dc5429b676b16d451e5f77"
+  },
+  {
+    "id": 35,
+    "name": "Black Sabbath",
+    "debut": 1968,
+    "image": "https://i.scdn.co/image/ab6761610000e5eb4870cd833ebe1092601820c3"
+  },
+  {
+    "id": 36,
+    "name": "A$AP Rocky",
+    "debut": 2011,
+    "image": "https://i.scdn.co/image/ab6761610000e5eb5c58c41a506a0d6b32cc6cad"
+  },
+  {
+    "id": 37,
+    "name": "2Pac",
+    "debut": 1991,
+    "image": "https://i.scdn.co/image/ab6761610000e5eb7f5cc432c9c109248ebec1ac"
+  },
+  {
+    "id": 38,
+    "name": "Lil Uzi Vert",
+    "debut": 2010,
+    "image": "https://i.scdn.co/image/ab6775700000ee85653ec13a405aa37729878ac9"
+  },
+  {
+    "id": 39,
+    "name": "Lil Baby",
+    "debut": 2017,
+    "image": "https://i.scdn.co/image/ab6761610000e5eb514da623c55dc9d2155705dd"
+  },
+  {
+    "id": 40,
+    "name": "Lil Durk",
+    "debut": 2011,
+    "image": "https://i.scdn.co/image/ab6761610000e5eb09791422702c3fa9780468d4"
   }
 ]
