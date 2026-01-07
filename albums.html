@@ -184,7 +184,7 @@
       const uid = user.uid;
 
       document.querySelectorAll(".rating").forEach(block => {
-        const albumId = block.dataset.id;
+        const albumId = String(block.dataset.id);
         const stars = block.querySelectorAll(".star");
         const avgText = block.querySelector(".average");
 
