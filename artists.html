@@ -44,8 +44,6 @@ const firebaseConfig = {
   authDomain: "music-ranker-54f1a.firebaseapp.com",
   databaseURL: "https://music-ranker-54f1a-default-rtdb.firebaseio.com",
   projectId: "music-ranker-54f1a",
-  storageBucket: "music-ranker-54f1a.firebasestorage.app",
-  messagingSenderId: "238695800458",
   appId: "1:238695800458:web:b98d744977f3761e9ed773"
 };
 
@@ -57,8 +55,10 @@ signInAnonymously(auth);
 const grid = document.getElementById("grid");
 let data = [];
 
-fetch("artists.json").then(r => r.json()).then(d => { data = d; render(d); });
+// Fetch artists
+fetch("artists.json").then(r => r.json()).then(d => { data = d; renderSorted(d); });
 
+// Renders cards
 function render(items){
   grid.innerHTML = "";
   items.forEach(a => {
@@ -77,14 +77,38 @@ function render(items){
   initRatings("artists");
 }
 
-function filterItems(){
-  const q = document.getElementById("search").value.toLowerCase();
-  render(data.filter(x => x.name.toLowerCase().includes(q)));
+// Weighted rating sort
+function sortByRating(items, type){
+  const promises = items.map(item => {
+    return get(ref(db, `ratings/${type}/${item.id}/userRatings`)).then(snapshot => {
+      const ratings = snapshot.val() ? Object.values(snapshot.val()) : [];
+      const count = ratings.length;
+      const avg = count ? ratings.reduce((a,b)=>a+b,0)/count : 0;
+      return { ...item, weightedAvg: avg, ratingCount: count };
+    });
+  });
+
+  return Promise.all(promises).then(results => {
+    results.sort((a,b) => (b.weightedAvg * Math.sqrt(b.ratingCount)) - (a.weightedAvg * Math.sqrt(a.ratingCount)));
+    return results;
+  });
 }
 
-// attach search input listener
+// Render sorted
+function renderSorted(items){
+  sortByRating(items, "artists").then(sorted => render(sorted));
+}
+
+// Search + filter + sort
+function filterItems(){
+  const q = document.getElementById("search").value.toLowerCase();
+  const filtered = data.filter(x => x.name.toLowerCase().includes(q));
+  renderSorted(filtered);
+}
+
 document.getElementById("search").addEventListener("keyup", () => filterItems());
 
+// Rating system
 function initRatings(type){
   onAuthStateChanged(auth,user=>{
     if(!user) return;
