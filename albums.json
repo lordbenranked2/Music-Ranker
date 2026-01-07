@@ -12,5 +12,26 @@
     "artist": "Daft Punk",
     "year": 2013,
     "image": "https://upload.wikimedia.org/wikipedia/en/2/26/Daft_Punk_-_Random_Access_Memories.png"
-  }
+  },
+  {
+    "id": 3,
+    "title": "IGOR",
+    "artist": "Tyler, the Creator",
+    "year": 2019,
+    "image": "https://upload.wikimedia.org/wikipedia/en/thumb/5/51/Igor_-_Tyler%2C_the_Creator.jpg/250px-Igor_-_Tyler%2C_the_Creator.jpg"
+  },
+  {
+    "id": 4,
+    "title": "This Old Dog",
+    "artist": "Mac DeMarco",
+    "year": 2017,
+    "image": "https://upload.wikimedia.org/wikipedia/en/5/5e/MacDeMarcoThisOldDog.png"
+  },
+  {
+    "id": 5,
+    "title": "The Dark Side of the Moon",
+    "artist": "Pink Floyd",
+    "year": 1973,
+    "image": "https://upload.wikimedia.org/wikipedia/en/3/3b/Dark_Side_of_the_Moon.png"
+  },
 ]
