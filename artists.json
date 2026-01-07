@@ -238,5 +238,11 @@
     "name": "Lil Durk",
     "debut": 2011,
     "image": "https://i.scdn.co/image/ab6761610000e5eb09791422702c3fa9780468d4"
+  },
+  {
+    "id": 41,
+    "name": "Pink Floyd",
+    "debut": 1965,
+    "image": "https://i.scdn.co/image/ab6761610000e5eb97885ce689d644c91dfba05c"
   }
 ]
