@@ -3,103 +3,103 @@
     "id": 1,
     "name": "Radiohead",
     "debut": 1993,
-    "image": "https://upload.wikimedia.org/wikipedia/en/1/1b/Radiohead.jpg"
+    "image": "https://i.scdn.co/image/ab6761610000e5eb4104fbd80f1f795728abbd59"
   },
   {
     "id": 2,
     "name": "Daft Punk",
     "debut": 1993,
-    "image": "https://upload.wikimedia.org/wikipedia/en/a/ae/Daft_Punk.jpg"
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Daft_Punk_in_2013_2-_centered.jpg/1280px-Daft_Punk_in_2013_2-_centered.jpg"
   },
   {
     "id": 3,
     "name": "Kendrick Lamar",
     "debut": 2003,
-    "image": "https://upload.wikimedia.org/wikipedia/en/0/03/Kendrick_Lamar_-_Good_Kid.jpg"
+    "image": "https://i.scdn.co/image/ab6761610000e5eb39ba6dcd4355c03de0b50918"
   },
   {
     "id": 4,
-    "name": "Beyoncé",
-    "debut": 1997,
-    "image": "https://upload.wikimedia.org/wikipedia/en/9/97/Beyoncé_-_Dangerously_in_Love_album_cover.jpg"
+    "name": "Tyler, the Creator",
+    "debut": 2007,
+    "image": "https://i.scdn.co/image/ab6761610000e5ebdf2728294ff77dd11eeb18fb"
   },
   {
     "id": 5,
     "name": "The Weeknd",
     "debut": 2010,
-    "image": "https://upload.wikimedia.org/wikipedia/en/f/f0/The_Weeknd_-_Starboy.png"
+    "image": "https://i.scdn.co/image/ab6761610000e5eb9e528993a2820267b97f6aae"
   },
   {
     "id": 6,
     "name": "Taylor Swift",
     "debut": 2006,
-    "image": "https://upload.wikimedia.org/wikipedia/en/f/f6/Taylor_Swift_-_Fearless.png"
+    "image": "https://i.scdn.co/image/ab67616d00001e020b04da4f224b51ff86e0a481"
   },
   {
     "id": 7,
     "name": "Post Malone",
     "debut": 2015,
-    "image": "https://upload.wikimedia.org/wikipedia/en/c/c3/Post_Malone_-_Hollywood%27s_Bleeding.png"
+    "image": "https://i.scdn.co/image/ab67616100005174e17c0aa1714a03d62b5ce4e0"
   },
   {
     "id": 8,
-    "name": "Adele",
-    "debut": 2008,
-    "image": "https://upload.wikimedia.org/wikipedia/en/1/1b/Adele_-_21.png"
+    "name": "Deftones",
+    "debut": 1988,
+    "image": "https://i.scdn.co/image/ab6761610000e5ebe3ac5eb948e78d9285d1dbdb"
   },
   {
     "id": 9,
     "name": "Coldplay",
     "debut": 1996,
-    "image": "https://upload.wikimedia.org/wikipedia/en/8/83/Coldplay_Parachutes_album_cover.jpg"
+    "image": "https://i.scdn.co/image/ab6761610000e5eb1ba8fc5f5c73e7e9313cc6eb"
   },
   {
     "id": 10,
     "name": "Billie Eilish",
     "debut": 2015,
-    "image": "https://upload.wikimedia.org/wikipedia/en/2/2e/Billie_Eilish_-_Happier_Than_Ever.png"
+    "image": "https://i.scdn.co/image/ab6761610000e5eb4a21b4760d2ecb7b0dcdc8da"
   },
   {
     "id": 11,
     "name": "Drake",
     "debut": 2006,
-    "image": "https://upload.wikimedia.org/wikipedia/en/2/20/Drake_-_Take_Care.png"
+    "image": "https://i.scdn.co/image/ab6761610000e5eb4293385d324db8558179afd9"
   },
   {
     "id": 12,
     "name": "Lana Del Rey",
     "debut": 2010,
-    "image": "https://upload.wikimedia.org/wikipedia/en/0/0e/Lana_Del_Rey_-_Born_to_Die.png"
+    "image": "https://i.scdn.co/image/ab6761610000e5ebb99cacf8acd5378206767261"
   },
   {
     "id": 13,
     "name": "Travis Scott",
     "debut": 2012,
-    "image": "https://upload.wikimedia.org/wikipedia/en/9/9a/Travis_Scott_-_Astroworld.png"
+    "image": "https://i.scdn.co/image/ab6761610000e5eb19c2790744c792d05570bb71"
   },
   {
     "id": 14,
     "name": "Rihanna",
     "debut": 2005,
-    "image": "https://upload.wikimedia.org/wikipedia/en/2/21/Rihanna_-_Good_Girl_Gone_Bad.png"
+    "image": "https://i.scdn.co/image/ab6761610000e5ebcb565a8e684e3be458d329ac"
   },
   {
     "id": 15,
     "name": "Bruno Mars",
     "debut": 2010,
-    "image": "https://upload.wikimedia.org/wikipedia/en/3/30/Bruno_Mars_-_Doo-Wops_%26_Hooligans.png"
+    "image": "https://i.scdn.co/image/ab6761610000e5ebc36dd9eb55fb0db4911f25dd"
   },
   {
     "id": 16,
-    "name": "Imagine Dragons",
-    "debut": 2008,
-    "image": "https://upload.wikimedia.org/wikipedia/en/5/58/ImagineDragonsNightVisionsCover.jpg"
+    "name": "Pantera",
+    "debut": 1981,
+    "image": "https://i.scdn.co/image/ab6761610000e5ebe21999c0102c240bdf094d9b"
   },
   {
     "id": 17,
-    "name": "Shawn Mendes",
-    "debut": 2014,
-    "image": "https://upload.wikimedia.org/wikipedia/en/2/20/Shawn_Mendes_-_Illuminate.png"
+    "name": "Frank Ocean",
+    "debut": 2005,
+    "image": "https://i.scdn.co/image/ab6761610000e5ebee3123e593174208f9754fab"
   },
   {
     "id": 18,
